@@ -1,0 +1,44 @@
+identify_movie
+
+create or replace function identify_movie (match text) returns table (id bigint, content text) language plpgsql as $$
+declare
+  sql_query text;
+begin
+  sql_query := '
+    with matching_rows as (
+      select
+        id,
+        content
+      from movies
+      where (position(''|'' in $1) > 0 and content ilike ''%'' || $1 || ''%'')
+         or (position(''|'' in $1) = 0 and position(''|'' in content) > 0 and id <= (select id from movies where content ilike ''%'' || $1 || ''%'' limit 1))
+      order by id desc
+      limit 1
+    )
+    select id, content from movies
+    where id >= coalesce((select id from matching_rows), 1)
+      and id < coalesce((select id from movies where position(''|'' in content) > 0 and id > (select id from matching_rows) LIMIT 1), (select max(id) from movies) + 1)
+    order by id';
+  return query execute sql_query using match;
+end;
+$$;
+
+<--- break --->
+
+match_movies
+
+create
+or replace function match_movies (
+  query_embedding vector (1536),
+  match_threshold float,
+  match_count int
+) returns table (id bigint, content text, similarity float) language sql stable as $$
+  select
+    movies.id,
+    movies.content,
+    1 - (movies.embedding <=> query_embedding) as similarity
+  from movies
+  where 1 - (movies.embedding <=> query_embedding) > match_threshold
+  order by (movies.embedding <=> query_embedding) asc
+  limit match_count;
+$$;

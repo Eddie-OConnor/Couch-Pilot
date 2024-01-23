@@ -1,0 +1,41 @@
+<!-- index.html -->
+
+<!doctype html>
+<html lang="en">
+    <head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+        <title>PopChoice</title>
+        <link rel="stylesheet" href="index.css">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Carter+One&family=Roboto+Slab:wght@300;400;700&display=swap');
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+    </head>
+    <body>
+        <header>
+            <img src="PopChoiceIcon.png" alt="pop choice icon">
+            <h1>PopChoice</h1>
+        </header>
+        <main>
+            <div id="load-graphic" class="hidden"></div>
+            <form id="movie-form">
+                <div class="relative">
+                    <label for="favorite-movie">What's your favorite movie and why?</label>
+                    <textarea id="favorite-movie" placeholder="The Shawshank Redemption Because it taught me to never give up hope no matter how hard life gets." maxlength="100"></textarea>
+                    <span class="char-count" id="char-count1">0/100</span>
+                </div>
+                <div class="relative">
+                    <label for="movie-mood">Are you in the mood for something new or a classic?</label>
+                    <textarea id="movie-mood" placeholder="I want to watch a movie that was released after 1990."></textarea>
+                    <span class="char-count" id="char-count2">0/100</span>
+                </div>
+                <div class="relative">
+                    <label for="fun-or-serious-movie">Do you want a fun flick or perhaps serious?</label>
+                    <textarea id="fun-or-serious-movie" placeholder="I want to watch a drama, something serious."></textarea>
+                    <span class="char-count" id="char-count3">0/100</span>
+                </div>
+                <button class="btn" type="submit" id="submit-btn" disabled>Let's Go</button>
+            </form>
+        </main>
+        <script type="module" src="index.js"></script>
+    </body>
+</html> 

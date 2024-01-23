@@ -1,0 +1,18 @@
+{
+  "name": "project",
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "2.39.2",
+    "openai": "4.19.1",
+    "langchain": "0.1.0"
+  },
+  "devDependencies": {
+    "vite": "latest"
+  },
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  }
+}
