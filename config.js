@@ -1,23 +1,67 @@
+// config.js
+
 import OpenAI from 'openai';
 import { createClient } from "@supabase/supabase-js";
 
+async function fetchKeys(){
+    try {
+        const response = await fetch('http://localhost:4000/keys')
+        if(response.ok){
+            const data = await response.json()
+            return data
+        } else {
+            console.error('error fetching keys', response.statusText)
+        }
+    } catch (e){
+        console.error('error fetching keys', e)
+  }
+}
+
+export async function initializeApiInstances(){
+    try {
+        const apiKeys = await fetchKeys()
+        /* OpenAI config */
+        if (!apiKeys.openaiApiKey) throw new Error("OpenAI API key is missing or invalid.");
+        const openai = new OpenAI({
+            apiKey: apiKeys.openaiApiKey,
+            dangerouslyAllowBrowser: true
+        });
+
+        /* Supabase config */
+        const privateKey = apiKeys.supabaseApiKey
+        if (!privateKey) throw new Error(`Supabase API key is missing or invalid`);
+        const url = apiKeys.supabaseUrl;
+        if (!url) throw new Error(`Supabase URL is missing or invalid`);
+        const supabase = createClient(url, privateKey);
+
+        /* OMDb API config */
+        const omdbApiKey = apiKeys.omdbApiKey
+        if(!omdbApiKey) throw new Error('OMDb API key is missing or invalid')
+
+        return {openai, supabase, omdbApiKey}
+    } catch (e){
+        console.error('error initializing instances', e)
+    }
+}
+
+
 /* OpenAI config */
-if (!process.env.OPENAI_API_KEY) throw new Error("OpenAI API key is missing or invalid.");
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true
-});
+// if (!process.env.OPENAI_API_KEY) throw new Error("OpenAI API key is missing or invalid.");
+// export const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY,
+//   dangerouslyAllowBrowser: true
+// });
 
 /* Supabase config */
-const privateKey = process.env.SUPABASE_API_KEY;
-if (!privateKey) throw new Error(`Expected env var SUPABASE_API_KEY`);
-const url = process.env.SUPABASE_URL;
-if (!url) throw new Error(`Expected env var SUPABASE_URL`);
-export const supabase = createClient(url, privateKey);
+// const privateKey = process.env.SUPABASE_API_KEY;
+// if (!privateKey) throw new Error(`Expected env var SUPABASE_API_KEY`);
+// const url = process.env.SUPABASE_URL;
+// if (!url) throw new Error(`Expected env var SUPABASE_URL`);
+// export const supabase = createClient(url, privateKey);
 
 /* OMDb API config */
-export const omdbApiKey = process.env.OMDB_API_KEY
-if(!omdbApiKey) throw new Error('Expected env var OMDB_API_KEY')
+// export const omdbApiKey = process.env.OMDB_API_KEY
+// if(!omdbApiKey) throw new Error('Expected env var OMDB_API_KEY')
 
 export const topImdbIds = [
     'tt0111161', 'tt0068646', 'tt0468569', 'tt0071562', 'tt0167260',

@@ -1,5 +1,9 @@
-import {openai, supabase, omdbApiKey, topImdbIds} from './config.js'
-import {RecursiveCharacterTextSplitter} from 'langchain/text_splitter'
+// index.js
+
+// import {openai, supabase, omdbApiKey, topImdbIds} from './config.js'
+import {initializeApiInstances} from './config.js'
+import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
+const {openai, supabase, omdbApiKey} = await initializeApiInstances()
 
 const submitBtn = document.getElementById('submit-btn')
 const favMovie = document.getElementById('favorite-movie')
@@ -32,8 +36,8 @@ async function main(input){
 async function createUserEmbedding(input){
     try {
         const embeddingResponse = await openai.embeddings.create({
-        model: "text-embedding-ada-002",
-        input
+            model: "text-embedding-ada-002",
+            input
         })
         return embeddingResponse.data[0].embedding
     } catch (e){
@@ -50,7 +54,7 @@ async function findNearestMatch(embedding) {
         const { data } = await supabase.rpc('match_movies', {
             query_embedding: embedding,
             match_threshold: 0.50,
-            match_count: 6 // Increase match_count to get more matches
+            match_count: 101 // Increase match_count to get more matches if there are issues returning a movie
         })
         for (let matchIndex = 0; matchIndex < data.length; matchIndex++) {
             const matchedMovie = data[matchIndex].content
