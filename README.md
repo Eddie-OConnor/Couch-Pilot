@@ -3,7 +3,7 @@
 <p align="center">
   <img src="screenshots/index.png" width="400" height="900"/>
   <img src="screenshots/load-wheel.png" width="400" height="900" />
-  <img src="screenshots/result.png" width="00" height="900" />
+  <img src="screenshots/result.png" width="400" height="900" />
 </p>
 
 ## Project Description
