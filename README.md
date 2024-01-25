@@ -1,5 +1,7 @@
 # AI Movie Picker
 
+![Home Screen](screenshots/index.png) &nbsp; &nbsp; ![Load Screen](screenshots/load-wheel.png) &nbsp; &nbsp; ![Result Screen](screenshots/result.png)
+
 ## Project Description
 AI Movie Picker recommends a top 500 IMDb movie based on a user's answers to three questions. It solves the chore of picking a movie when you can't decide or can't find something to watch.
 
@@ -46,3 +48,7 @@ Contributions are welcome! Please follow these guidelines:
 
 ## License
 This project is open source. [License details](LICENSE)
+
+## Contact Information
+- LinkedIn: [Edward James O'Connor](https://www.linkedin.com/in/edwardjamesoconnor/)
+- GitHub: [Your GitHub Profile](https://github.com/Eddie-OConnor)
