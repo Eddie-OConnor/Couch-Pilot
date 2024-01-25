@@ -1,9 +1,9 @@
 # PopChoice
 
 <p align="center">
-  <img src="screenshots/index.png" width="400" height="900"/>
-  <img src="screenshots/load-wheel.png" width="400" height="900" />
-  <img src="screenshots/result.png" width="400" height="900" />
+  <img src="screenshots/index.png" width="200" height="450"/>
+  <img src="screenshots/load-wheel.png" width="200" height="450" />
+  <img src="screenshots/result.png" width="200" height="450" />
 </p>
 
 ## Project Description
