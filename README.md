@@ -1,9 +1,13 @@
-# AI Movie Picker
+# PopChoice
 
-![Home Screen](screenshots/index.png) &nbsp; &nbsp; ![Load Screen](screenshots/load-wheel.png) &nbsp; &nbsp; ![Result Screen](screenshots/result.png)
+<p align="center">
+  <img src="screenshots/index.png" width="200" />
+  <img src="screenshots/load-wheel.png" width="200" />
+  <img src="screenshots/result.png" width="200" />
+</p>
 
 ## Project Description
-AI Movie Picker recommends a top 500 IMDb movie based on a user's answers to three questions. It solves the chore of picking a movie when you can't decide or can't find something to watch.
+PopChoice recommends a top 500 IMDb movie based on a user's answers to three questions. It solves the chore of picking a movie when you can't decide or can't find something to watch.
 
 ## Technologies Used
 - HTML, JS, CSS
