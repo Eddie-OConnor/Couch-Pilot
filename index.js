@@ -17,10 +17,12 @@ submitBtn.addEventListener('click', async function(e){
     main(userInput)
 })
 
-
 async function main(input){
     const embedding = await createUserEmbedding(input)
     const match = await findNearestMatch(embedding)
+    if(!match){
+        alert('Oops! No matching movies passed verification. Please try again with different preferences. If the issue persists please contact support')
+    }
     const movie = await identifyMovie(match)
     const formattedMovie = await formatMovie(movie)
     localStorage.setItem('movieRecommendation', formattedMovie.title)
@@ -54,7 +56,7 @@ async function findNearestMatch(embedding) {
         const { data } = await supabase.rpc('match_movies', {
             query_embedding: embedding,
             match_threshold: 0.50,
-            match_count: 101 // Increase match_count to get more matches if there are issues returning a movie
+            match_count: 20 // Increase match_count to get more matches if there are issues returning a movie
         })
         for (let matchIndex = 0; matchIndex < data.length; matchIndex++) {
             const matchedMovie = data[matchIndex].content
@@ -63,7 +65,6 @@ async function findNearestMatch(embedding) {
             }
         }
         console.error('No matching movies passed verification')
-        return null
     } catch (e) {
         console.error('There was an error finding matches in supabase')
     }
@@ -75,12 +76,16 @@ async function verifyMovie(match) {
     try {
         const { data } = await supabase.rpc('identify_movie', {
             match: match,
-        })
-        const title = data[0].content;
-        return !containsWords(title, extractWordsFromFavMovie(favMovie))
+        });
+        const title = data[0].content
+        const extractedWords = extractWordsFromFavMovie(favMovie)
+        if (!containsWords(title, extractedWords)){
+            return true
+        } else {
+            return false
+        }
     } catch (e) {
-        console.error('There was an error verifying the movie in supabase')
-        return false
+        console.error('There was an error verifying the movie in supabase:', e.message)
     }
 }
 
@@ -223,8 +228,8 @@ async function splitDocument(document){
             chunkOverlap: 35,
             separators: ["\n"]
         });
-        const output = await splitter.createDocuments([text]);
-        return output;
+        const output = await splitter.createDocuments([text])
+        return output
     } catch (e) {
         console.error('there was an issue splitting text')
         throw e
@@ -233,9 +238,11 @@ async function splitDocument(document){
 
 
 function extractWordsFromFavMovie(favMovie) {
+    const STOP_WORDS = ['the', 'i', 'like', 'and', 'a', 'to', 'of']
     try {
-        const extractedWords = favMovie.value.toLowerCase().match(/\b\w+\b/g) || [];
-        return extractedWords;
+        const extractedWords = favMovie.value.toLowerCase().match(/\b\w+\b/g) || []
+        const filteredWords = extractedWords.filter(word => !STOP_WORDS.includes(word))
+        return filteredWords
     } catch (e) {
         console.error('Error extracting words from favMovie:', e.message);
         return [];
@@ -246,13 +253,15 @@ function extractWordsFromFavMovie(favMovie) {
 function containsWords(text, words) {
     try {
         const contains = words.some(word => text.toLowerCase().includes(word));
-        return contains;
+        if (contains){
+            return true
+        } else {
+            return false
+        }
     } catch (e) {
         console.error('Error checking if text contains words:', e.message);
-        return false;
     }
 }
-
 
 /* UX functions */
 
