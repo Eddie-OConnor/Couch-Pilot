@@ -26,7 +26,7 @@ app.get('/keys', (req, res) => {
 
         res.json({openaiApiKey, supabaseApiKey, supabaseUrl, omdbApiKey})
     } catch (e) {
-        console.error('error fetching ____ key', error)
+        console.error('error fetching key', error)
         res.status(500).json({error: 'internal server error'})
     }
 })
