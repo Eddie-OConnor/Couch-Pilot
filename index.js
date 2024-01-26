@@ -1,6 +1,5 @@
 // index.js
 
-// import {openai, supabase, omdbApiKey, topImdbIds} from './config.js'
 import {initializeApiInstances} from './config.js'
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
 const {openai, supabase, omdbApiKey} = await initializeApiInstances()
