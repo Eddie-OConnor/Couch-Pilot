@@ -5,7 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 
 async function fetchKeys(){
     try {
-        const response = await fetch('/.netlify/functions/keys')
+        const response = await fetch('https://jazzy-taffy-895ddf.netlify.app/.netlify/functions/keys')
         if(response.ok){
             const data = await response.json()
             return data
