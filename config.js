@@ -44,25 +44,6 @@ export async function initializeApiInstances(){
     }
 }
 
-
-/* OpenAI config */
-// if (!process.env.OPENAI_API_KEY) throw new Error("OpenAI API key is missing or invalid.");
-// export const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY,
-//   dangerouslyAllowBrowser: true
-// });
-
-/* Supabase config */
-// const privateKey = process.env.SUPABASE_API_KEY;
-// if (!privateKey) throw new Error(`Expected env var SUPABASE_API_KEY`);
-// const url = process.env.SUPABASE_URL;
-// if (!url) throw new Error(`Expected env var SUPABASE_URL`);
-// export const supabase = createClient(url, privateKey);
-
-/* OMDb API config */
-// export const omdbApiKey = process.env.OMDB_API_KEY
-// if(!omdbApiKey) throw new Error('Expected env var OMDB_API_KEY')
-
 export const topImdbIds = [
     'tt0111161', 'tt0068646', 'tt0468569', 'tt0071562', 'tt0167260',
     'tt0110912', 'tt0108052', 'tt0060196', 'tt0050083', 'tt1375666',
