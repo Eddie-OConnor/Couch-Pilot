@@ -3,40 +3,39 @@
 import OpenAI from 'openai';
 import { createClient } from "@supabase/supabase-js";
 
-// async function fetchKeys(){
-//     try {
-//         const response = await fetch('https://jazzy-taffy-895ddf.netlify.app/.netlify/functions/keys')
-//         if(response.ok){
-//             const data = await response.json()
-//             return data
-//         } else {
-//             console.error('error fetching keys', response.statusText)
-//         }
-//     } catch (e){
-//         console.error('error fetching keys', e)
-//   }
-// }
+async function fetchKeys(){
+    try {
+        const response = await fetch('http://localhost:4000/keys')
+        if(response.ok){
+            const data = await response.json()
+            return data
+        } else {
+            console.error('error fetching keys', response.statusText)
+        }
+    } catch (e){
+        console.error('error fetching keys', e)
+  }
+}
 
 export async function initializeApiInstances(){
     try {
-        // const apiKeys = await fetchKeys()
+        const apiKeys = await fetchKeys()
         /* OpenAI config */
-        const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY
-        if (!openaiApiKey) throw new Error("OpenAI API key is missing or invalid.");
+        if (!apiKeys.openaiApiKey) throw new Error("OpenAI API key is missing or invalid.");
         const openai = new OpenAI({
-            apiKey: openaiApiKey,
+            apiKey: apiKeys.openaiApiKey,
             dangerouslyAllowBrowser: true
         });
 
         /* Supabase config */
-        const privateKey = import.meta.env.VITE_SUPABASE_API_KEY
+        const privateKey = apiKeys.supabaseApiKey
         if (!privateKey) throw new Error(`Supabase API key is missing or invalid`);
-        const url = import.meta.env.VITE_SUPABASE_URL
+        const url = apiKeys.supabaseUrl;
         if (!url) throw new Error(`Supabase URL is missing or invalid`);
         const supabase = createClient(url, privateKey);
 
         /* OMDb API config */
-        const omdbApiKey = import.meta.env.VITE_OMDB_API_KEY
+        const omdbApiKey = apiKeys.omdbApiKey
         if(!omdbApiKey) throw new Error('OMDb API key is missing or invalid')
 
         return {openai, supabase, omdbApiKey}
