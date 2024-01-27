@@ -21,21 +21,22 @@ export async function initializeApiInstances(){
     try {
         // const apiKeys = await fetchKeys()
         /* OpenAI config */
-        if (!process.env.OPENAI_API_KEY) throw new Error("OpenAI API key is missing or invalid.");
+        const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY
+        if (!openaiApiKey) throw new Error("OpenAI API key is missing or invalid.");
         const openai = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY,
+            apiKey: openaiApiKey,
             dangerouslyAllowBrowser: true
         });
 
         /* Supabase config */
-        const privateKey = process.env.SUPABASE_API_KEY
+        const privateKey = import.meta.env.VITE_SUPABASE_API_KEY
         if (!privateKey) throw new Error(`Supabase API key is missing or invalid`);
-        const url = process.env.SUPABASE_URL
+        const url = import.meta.env.VITE_SUPABASE_URL
         if (!url) throw new Error(`Supabase URL is missing or invalid`);
         const supabase = createClient(url, privateKey);
 
         /* OMDb API config */
-        const omdbApiKey = process.env.OMDB_API_KEY
+        const omdbApiKey = import.meta.env.VITE_OMDB_API_KEY
         if(!omdbApiKey) throw new Error('OMDb API key is missing or invalid')
 
         return {openai, supabase, omdbApiKey}
