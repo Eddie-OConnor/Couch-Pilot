@@ -3,8 +3,8 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  esbuild: {
-    target: 'es2020',
+  build: {
+    target: 'esnext',
   },
   plugins: [],
 });
