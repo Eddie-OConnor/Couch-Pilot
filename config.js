@@ -3,23 +3,23 @@
 import OpenAI from 'openai';
 import { createClient } from "@supabase/supabase-js";
 
-async function fetchKeys(){
-    try {
-        const response = await fetch('https://jazzy-taffy-895ddf.netlify.app/.netlify/functions/keys')
-        if(response.ok){
-            const data = await response.json()
-            return data
-        } else {
-            console.error('error fetching keys', response.statusText)
-        }
-    } catch (e){
-        console.error('error fetching keys', e)
-  }
-}
+// async function fetchKeys(){
+//     try {
+//         const response = await fetch('https://jazzy-taffy-895ddf.netlify.app/.netlify/functions/keys')
+//         if(response.ok){
+//             const data = await response.json()
+//             return data
+//         } else {
+//             console.error('error fetching keys', response.statusText)
+//         }
+//     } catch (e){
+//         console.error('error fetching keys', e)
+//   }
+// }
 
 export async function initializeApiInstances(){
     try {
-        const apiKeys = await fetchKeys()
+        // const apiKeys = await fetchKeys()
         /* OpenAI config */
         if (!apiKeys.openaiApiKey) throw new Error("OpenAI API key is missing or invalid.");
         const openai = new OpenAI({
