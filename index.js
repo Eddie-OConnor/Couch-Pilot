@@ -1,8 +1,5 @@
 // index.js
-
-import {initializeApiInstances} from 'netlify\functions\fetchApi\fetchApi.js'
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
-const {openai, supabase, omdbApiKey} = await initializeApiInstances()
 
 const submitBtn = document.getElementById('submit-btn')
 const favMovie = document.getElementById('favorite-movie')
@@ -16,14 +13,21 @@ submitBtn.addEventListener('click', async function(e){
     main(userInput)
 })
 
+async function fetchKeys(){
+    const response = await fetch(/.netlify/functions/fetchApi)
+    const {openai, supabase, omdbApiKey} = await response.json()
+    return {openai, supabase, omdbApiKey}
+}
+
 async function main(input){
-    const embedding = await createUserEmbedding(input)
-    const match = await findNearestMatch(embedding)
+    const { openai, supabase, omdbApiKey } = await fetchKeys();
+    const embedding = await createUserEmbedding(input, openai)
+    const match = await findNearestMatch(embedding, supabase)
     if(!match){
         alert('Oops! No matching movies passed verification. Please try again with different preferences. If the issue persists please contact support')
     }
-    const movie = await identifyMovie(match)
-    const formattedMovie = await formatMovie(movie)
+    const movie = await identifyMovie(match, supabase)
+    const formattedMovie = await formatMovie(movie, omdbApiKey)
     localStorage.setItem('movieRecommendation', formattedMovie.title)
     localStorage.setItem('recommendationSummary', formattedMovie.summary)
     localStorage.setItem('moviePoster', formattedMovie.poster)
@@ -34,7 +38,7 @@ async function main(input){
 /** movie functions */
 
 
-async function createUserEmbedding(input){
+async function createUserEmbedding(input, openai){
     try {
         const embeddingResponse = await openai.embeddings.create({
             model: "text-embedding-ada-002",
@@ -50,7 +54,7 @@ async function createUserEmbedding(input){
 // see supabase-sql-queries.txt for sql queries used in findNearestMatch() and identifyMovie()
 
 
-async function findNearestMatch(embedding) {
+async function findNearestMatch(embedding, supabase) {
     try {
         const { data } = await supabase.rpc('match_movies', {
             query_embedding: embedding,
@@ -59,7 +63,7 @@ async function findNearestMatch(embedding) {
         })
         for (let matchIndex = 0; matchIndex < data.length; matchIndex++) {
             const matchedMovie = data[matchIndex].content
-            if (await verifyMovie(matchedMovie)) {
+            if (await verifyMovie(matchedMovie, supabase)) {
                 return matchedMovie
             }
         }
@@ -71,7 +75,7 @@ async function findNearestMatch(embedding) {
 
 /* verfies that the matched movie is not the one the user declared as their favorite */
 
-async function verifyMovie(match) {
+async function verifyMovie(match, supabase) {
     try {
         const { data } = await supabase.rpc('identify_movie', {
             match: match,
@@ -89,7 +93,7 @@ async function verifyMovie(match) {
 }
 
 
-async function identifyMovie(match){
+async function identifyMovie(match, supabase){
     try {
         const {data} = await supabase.rpc('identify_movie', {
             match: match,
@@ -102,7 +106,7 @@ async function identifyMovie(match){
 
 /* formats movie information to be inserted into results html */
 
-async function formatMovie(movie){
+async function formatMovie(movie, omdbApiKey){
     try {
         const movieInfo = movie[0].content
         const movieInfoTrimmed = movieInfo.match(/^(.*): (\d{4})/)
@@ -110,8 +114,8 @@ async function formatMovie(movie){
         const movieYear = movieInfoTrimmed[2]
         let movieTitleAndYear = `${movieTitle} (${movieYear})`
         const movieSummary = movie.slice(1).map(item => item.content).join(' ')
-        const shortenedSummary = await shortenSummary(movieSummary)
-        const moviePoster = await getMoviePoster(movieTitle)
+        const shortenedSummary = await shortenSummary(movieSummary, openai)
+        const moviePoster = await getMoviePoster(movieTitle, omdbApiKey)
         return {
             title: movieTitleAndYear,
             summary: shortenedSummary,
@@ -124,7 +128,7 @@ async function formatMovie(movie){
 
 /* uses ai to shorten and correct movie summary pulled from chunked text */
 
-async function shortenSummary(summary){
+async function shortenSummary(summary, openai){
     const messages = [
         {
             role: 'system',
@@ -148,7 +152,7 @@ async function shortenSummary(summary){
 }
 
 
-async function getMoviePoster(input){
+async function getMoviePoster(input, omdbApiKey){
     const response = await fetch
         (`https://www.omdbapi.com/?s=${input}&apikey=${omdbApiKey}&type=movie`)
     if (response.ok){
@@ -164,6 +168,7 @@ async function getMoviePoster(input){
 
 
 async function getTopMovies(){
+    const { omdbApiKey } = await fetchKeys();
     for (let imdbId of topImdbIds){
         const response = await fetch 
             (`https://www.omdbapi.com/?&apikey=${omdbApiKey}&i=${imdbId}&plot=full`)
@@ -186,6 +191,7 @@ async function getTopMovies(){
 
 
 async function createAndStoreMovieEmbeddings() {
+    const { openai, supabase } = await fetchKeys();
     try {
         const textFile = await splitDocument('movies.txt')
         const textChunks = textFile.map(textChunk => textChunk.pageContent)
