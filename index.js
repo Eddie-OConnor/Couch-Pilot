@@ -1,6 +1,6 @@
 // index.js
 
-import {initializeApiInstances} from './config.js'
+import {initializeApiInstances} from 'netlify\functions\fetchApi\fetchApi.js'
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
 const {openai, supabase, omdbApiKey} = await initializeApiInstances()
 
