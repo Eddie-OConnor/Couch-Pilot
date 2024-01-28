@@ -14,7 +14,7 @@ submitBtn.addEventListener('click', async function(e){
 })
 
 async function fetchKeys(){
-    const response = await fetch(/.netlify/functions/fetchApi)
+    const response = await fetch('/.netlify/functions/fetchApi')
     const {openai, supabase, omdbApiKey} = await response.json()
     return {openai, supabase, omdbApiKey}
 }
