@@ -27,7 +27,7 @@ async function main(input){
     localStorage.setItem('movieRecommendation', formattedMovie.title)
     localStorage.setItem('recommendationSummary', formattedMovie.summary)
     localStorage.setItem('moviePoster', formattedMovie.poster)
-    window.location.href = 'results.html'
+    window.location.href = '/results.html'
 }
 
 
