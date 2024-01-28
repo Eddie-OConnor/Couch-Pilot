@@ -30,7 +30,7 @@ export async function initializeApiInstances(){
         if (!apiKeys.openaiApiKey) throw new Error("OpenAI API key is missing or invalid.");
         const openai = new OpenAI({
             apiKey: apiKeys.openaiApiKey,
-            // dangerouslyAllowBrowser: true
+            dangerouslyAllowBrowser: true
         });
 
         /* Supabase config */
