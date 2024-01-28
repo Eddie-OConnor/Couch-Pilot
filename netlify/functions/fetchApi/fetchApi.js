@@ -33,17 +33,13 @@ export async function initializeApiInstances(){
 
 const handler = async (event) => {
   try {
-        const openaiApiKey = process.env.OPENAI_API_KEY
-        const supabaseApiKey = process.env.SUPABASE_API_KEY
-        const supabaseUrl = process.env.SUPABASE_URL
-        const omdbApiKey = process.env.OMDB_API_KEY
+        const instances = await initializeApiInstances()
     return {
       statusCode: 200,
       body: JSON.stringify({ 
-        openai: openaiApiKey,
-        supabaseApiKey: supabaseApiKey,
-        supabaseUrl: supabaseUrl,
-        omdbApiKey: omdbApiKey
+        openai: instances.openai,
+        supabase: instances.supabase,
+        omdbApiKey: instances.omdbApiKey
        }),
     }
   } catch (error) {
