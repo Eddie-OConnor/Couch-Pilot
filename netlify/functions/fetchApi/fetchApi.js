@@ -15,11 +15,11 @@ export async function initializeApiInstances(){
         });
 
         /* Supabase config */
-        const privateKey = process.env.OPENAI_API_KEY
-        if (!privateKey) throw new Error(`Supabase API key is missing or invalid`);
-        const url = process.env.SUPABASE_URL;
-        if (!url) throw new Error(`Supabase URL is missing or invalid`);
-        const supabase = createClient(url, privateKey);
+        const supabaseApiKey = process.env.SUPABASE_API_KEY
+        if (!supabaseApiKey) throw new Error(`Supabase API key is missing or invalid`);
+        const supabaseUrl = process.env.SUPABASE_URL;
+        if (!supabaseUrl) throw new Error(`Supabase URL is missing or invalid`);
+        const supabase = createClient(supabaseUrl, supabaseApiKey);
 
         /* OMDb API config */
         const omdbApiKey = process.env.OMDB_API_KEY
@@ -40,10 +40,10 @@ const handler = async (event) => {
     return {
       statusCode: 200,
       body: JSON.stringify({ 
-        openaiApiKey,
-        supabaseApiKey,
-        supabaseUrl,
-        omdbApiKey
+        openai: openaiApiKey,
+        supabaseApiKey: supabaseApiKey,
+        supabaseUrl: supabaseUrl,
+        omdbApiKey: omdbApiKey
        }),
     }
   } catch (error) {
