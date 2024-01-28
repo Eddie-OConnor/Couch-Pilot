@@ -17,19 +17,17 @@ PopChoice recommends a top 500 IMDb movie based on a user's answers to three que
 - APIs
 - Vector Embeddings
 - Frontend: Vite
-- Backend: Express (Node.js)
+- Backend: Netlify
 
 ## Installation Instructions
 1. Clone the repository: `git clone https://github.com/your-username/ai-movie-picker.git`
-2. Navigate to the project folder: `cd ai-movie-picker`
+2. Connect repo to Netlify
 3. Install dependencies: `npm install`
-4. Create a `.env` file and add the following keys with your own API keys:
+4. Add the following keys with your own API keys as environment variables:
    - `OPENAI_API_KEY`
    - `SUPABASE_API_KEY`
    - `SUPABASE_URL`
    - `OMDB_API_KEY`
-5. Start the server: `npm start`
-6. Start the frontend (in a separate terminal): `npm run dev`
 
 ## Usage
 1. Answer the questions presented.
@@ -49,6 +47,7 @@ Contributions are welcome! Please follow these guidelines:
 - [Supabase](https://supabase.io/)
 - [OMDb API](https://www.omdbapi.com/)
 - [Vite](https://vitejs.dev/)
+- [Netlify](https://www.netlify.com/)
 
 ## License
 This project is open source. [License details](LICENSE)

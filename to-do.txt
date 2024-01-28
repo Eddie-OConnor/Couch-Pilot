@@ -1,1 +1,1 @@
-- figure out why some searches are unable to be validated
+- update error if openai hits max monthly usage
