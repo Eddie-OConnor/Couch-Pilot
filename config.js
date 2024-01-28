@@ -8,7 +8,13 @@ async function fetchKeys(){
         const response = await fetch('https://jazzy-taffy-895ddf.netlify.app/.netlify/functions/fetchApi')
         if(response.ok){
             const data = await response.json()
-            return data
+            const { openaiApiKey, supabaseApiKey, supabaseUrl, omdbApiKey } = data
+            return {
+                openaiApiKey: openaiApiKey,
+                supabaseApiKey: supabaseApiKey,
+                supabaseUrl: supabaseUrl,
+                omdbApiKey: omdbApiKey
+            }
         } else {
             console.error('error fetching keys', response.statusText)
         }
@@ -24,7 +30,7 @@ export async function initializeApiInstances(){
         if (!apiKeys.openaiApiKey) throw new Error("OpenAI API key is missing or invalid.");
         const openai = new OpenAI({
             apiKey: apiKeys.openaiApiKey,
-            dangerouslyAllowBrowser: true
+            // dangerouslyAllowBrowser: true
         });
 
         /* Supabase config */
