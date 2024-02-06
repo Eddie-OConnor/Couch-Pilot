@@ -20,7 +20,7 @@ PopChoice recommends a top 500 IMDb movie based on a user's answers to three que
 - Backend: Netlify
 
 ## Installation Instructions
-1. Clone the repository: `git clone https://github.com/your-username/ai-movie-picker.git`
+1. Clone the repository
 2. Connect repo to Netlify
 3. Install dependencies: `npm install`
 4. Add the following keys with your own API keys as environment variables:
