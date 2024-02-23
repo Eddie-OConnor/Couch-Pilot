@@ -1,9 +1,9 @@
 # CouchPilot
 
 <p align="center">
-  <img src="screenshots/index.png" width="200" height="450"/>
-  <img src="screenshots/load-wheel.png" width="200" height="450" />
-  <img src="screenshots/result.png" width="200" height="450" />
+  <img src="screenshots/Screenshot 2024-02-23 100304.png" width="200" height="450"/>
+  <img src="screenshots/Screenshot 2024-02-23 100413_2.png" width="200" height="450" />
+  <img src="screenshots/Screenshot 2024-02-23 100512.png" width="200" height="450" />
 </p>
 
 ## Project Description
