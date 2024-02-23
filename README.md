@@ -1,4 +1,4 @@
-# PopChoice
+# CouchPilot
 
 <p align="center">
   <img src="screenshots/index.png" width="200" height="450"/>
